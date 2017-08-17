@@ -1,0 +1,8 @@
+width = 60
+height = 60
+border = 10
+length = 8
+difficulty = 50
+solve = 0
+gen = 3
+mask = rabbit.jpg
