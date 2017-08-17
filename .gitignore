@@ -101,8 +101,8 @@ ENV/
 .mypy_cache/
 
 # images
-.jpg
-.png
-.db
+*.jpg
+*.png
+*.db
 
-.conf
+*.conf
