@@ -1,5 +1,5 @@
 from random import random
-
+from collections import deque
 
 class Maze:
 
@@ -57,10 +57,10 @@ class Maze:
             self._cells[a[0]][a[1]]._sides -= 2
             self._cells[b[0]][b[1]]._sides -= 1
 
-    def draw(self, d, length, border):
+    def draw(self, d, length, border, colour):
         for x in range(self._w):
             for y in range(self._h):
-                self._cells[x][y].draw(d, length, border)
+                self._cells[x][y].draw(d, length, border, colour)
 
     def find_possible(self, xy):
         x,y = xy
@@ -76,24 +76,25 @@ class Maze:
         return possible
 
     def solve(self, start, end):
-        queue = [(start,[start])]
+        queue = deque()
+        queue.append((start,[start]))
         while queue:
-            (vertex, path) = queue.pop(0)
+            (vertex, path) = queue.popleft()
             possible = [n for n in self.find_possible(vertex) if n not in path]
             for x in possible:
                 if x == end:
-                    return path + [x]
+                    return path+[x]
                 else:
-                    queue.append((x,path+[x]))
+                    queue.append((x,path + [x]))
 
-    def draw_path(self, path, d, l, b):
+    def draw_path(self, path, d, l, b, c):
         for i in range(len(path)-1):
             half_l = l/2
             start_x = path[i][0] * l + b + half_l
             start_y = path[i][1] * l + b + half_l
             end_x = path[i+1][0] * l + b + half_l
             end_y = path[i+1][1] * l + b + half_l
-            d.line([(start_x,start_y),(end_x,end_y)], fill="#D62828", width=1)
+            d.line([(start_x,start_y),(end_x,end_y)], fill=c, width=1)
 
 
 class Cell:
@@ -104,8 +105,7 @@ class Cell:
         self._sides = 15
         self._visited = False
 
-    def draw(self, d, l, b):
-        colour = "#C5C5C5"
+    def draw(self, d, l, b, colour):
         top_left = (self._x * l + b, self._y * l + b)
         top_right = (self._x * l + b + l, self._y * l + b)
         bot_left = (self._x * l + b, self._y * l + b + l)

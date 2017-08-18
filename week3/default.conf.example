@@ -1,8 +1,11 @@
-width = 60
-height = 60
+width = 200
+height = 200
 border = 10
-length = 8
+length = 4
 difficulty = 50
-solve = 0
-gen = 3
+solve = 1
+gen = 1
 mask = rabbit.jpg
+background = #0D0221
+wall = #C5C5C5
+path = #D62828
