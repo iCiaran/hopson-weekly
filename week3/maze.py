@@ -62,30 +62,64 @@ class Maze:
             for y in range(self._h):
                 self._cells[x][y].draw(d, length, border, colour)
 
-    def find_possible(self, xy):
+    def find_possible_with_direction(self, direction, xy, first):
+        if first:
+            tocheck = [0,1,2,3]
+        else:
+            tocheck = [direction, (direction+1)%4, (direction-1)%4]
         x,y = xy
         possible = []
-        if self._cells[x][y]._sides & 1 == 0 and y > 0:    #top
-            possible.append((x,y-1))
-        if self._cells[x][y]._sides & 2 == 0 and y < self._h - 1:    #bottom
-            possible.append((x,y+1))
-        if self._cells[x][y]._sides & 4 == 0 and x > 0:    #left
-            possible.append((x-1,y))
-        if self._cells[x][y]._sides & 8 == 0 and x < self._w - 1:    #right
-            possible.append((x+1,y))
+        for n in tocheck:
+            if n == 0:
+                if self._cells[x][y]._sides & 1 == 0 and y > 0:              #top
+                    possible.append(0)
+            elif n == 1:
+                if self._cells[x][y]._sides & 8 == 0 and x < self._w - 1:    #right
+                    possible.append(1)
+            elif n == 2:
+                if self._cells[x][y]._sides & 2 == 0 and y < self._h - 1:    #bottom
+                    possible.append(2)
+            else:
+                if self._cells[x][y]._sides & 4 == 0 and x > 0:              #left
+                    possible.append(3)
         return possible
+
+    def get_next_cell(self, direction, xy):
+        x, y = xy
+        if direction == 0:
+            return (x, y-1)
+        elif direction == 1:
+            return (x+1, y)
+        elif direction == 2:
+            return (x, y+1)
+        else:
+            return (x-1, y)
+
+    def get_coord_path(self, direction_path, xy):
+        path = [xy]
+        for d in direction_path:
+            next_cell = self.get_next_cell(d, xy)
+            path.append(next_cell)
+            xy = next_cell
+        return path
 
     def solve(self, start, end):
         queue = deque()
-        queue.append((start,[start]))
+        queue.append((start, 1, []))
+        first = True
         while queue:
-            (vertex, path) = queue.popleft()
-            possible = [n for n in self.find_possible(vertex) if n not in path]
-            for x in possible:
-                if x == end:
-                    return path+[x]
+            (xy, direction, path) = queue.popleft()
+            if first:
+                possible = self.find_possible_with_direction(direction, xy, first)
+                first = False
+            else:
+                possible = self.find_possible_with_direction(direction, xy, first)
+            for d in possible:
+                next_cell = self.get_next_cell(d, xy)
+                if next_cell == end:
+                    return self.get_coord_path(path + [d], start)
                 else:
-                    queue.append((x,path + [x]))
+                    queue.append((next_cell, d, path+[d]))
 
     def draw_path(self, path, d, l, b, c):
         for i in range(len(path)-1):

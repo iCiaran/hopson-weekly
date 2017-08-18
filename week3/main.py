@@ -24,9 +24,8 @@ def main():
     drawer = ImageDraw.Draw(image)
 
     # 0 - random
-    # 1 - sin based
+    # 1 - mask
     # 2 - modulus
-    # 3 - mask
     gen = [lambda c: c[0] * (1+difficulty/20),
            lambda c: c[1] if get_brightness(mask, c) < 0.5 else (c[0]+random()*(1+difficulty/20)),
            lambda c: (c[0] * c[1]) % 10 + c[0] + random()*1.5]
