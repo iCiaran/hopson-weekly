@@ -6,9 +6,9 @@ Generation modes:
 1 - Maze with image mask
 2 - Modulus maze
 
-Inspired by [https://medium.com/@G3Kappa/generating-mazes-from-pictures-or-masking-entropy-4d050d148539](this) article.
+Inspired by [this](https://medium.com/@G3Kappa/generating-mazes-from-pictures-or-masking-entropy-4d050d148539) article.
 
-Album of demo outputs [https://imgur.com/a/lHqFq](here).
+Album of demo outputs [here](https://imgur.com/a/lHqFq).
 
 
 Config options:
