@@ -13,14 +13,14 @@ Album of demo outputs [here](https://imgur.com/a/lHqFq).
 
 Config options:
 
-width = maze width in cells
-height = maze height in cells
-border = border around maze in pixels
-length = length of gap between walls in pixels
-difficulty = difficulty of maze (1-100)
-solve = Only generate maze - 0, Generate and solve - 1
-gen = Generation mode used
-mask = filename of image mask
-background = background colour
-wall = wall colour
-path = path colour
+ - width = maze width in cells
+ - height = maze height in cells
+ - border = border around maze in pixels
+ - length = length of gap between walls in pixels
+ - difficulty = difficulty of maze (1-100)
+ - solve = Only generate maze - 0, Generate and solve - 1
+ - gen = Generation mode used
+ - mask = filename of image mask
+ - background = background colour
+ - wall = wall colour
+ - path = path colour
