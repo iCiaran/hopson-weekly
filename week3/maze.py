@@ -11,6 +11,7 @@ class Maze:
         self.generate()
 
     def find_neighbours(self,x,y):
+        '''Return a list of valid neighbours to visit'''
         neighbours = []
         if x > 0:
             neighbours.append((x-1, y))
@@ -23,6 +24,8 @@ class Maze:
         return [n for n in neighbours if not self._cells[n[0]][n[1]]._visited]
 
     def generate(self):
+        '''Generate the maze'''
+
         self._cells = [[Cell(x, y) for y in range(self._h)] for x in range(self._w)]
         self._cells[0][0]._visited = True
 
@@ -44,6 +47,7 @@ class Maze:
                 xy = stack.pop()
 
     def remove_walls(self,a,b):
+        '''Remove the wall between two cells'''
         if a[0] > b[0]:     #a to right
             self._cells[a[0]][a[1]]._sides -= 4
             self._cells[b[0]][b[1]]._sides -= 8
@@ -58,11 +62,13 @@ class Maze:
             self._cells[b[0]][b[1]]._sides -= 1
 
     def draw(self, d, length, border, colour):
+        '''Draw the maze'''
         for x in range(self._w):
             for y in range(self._h):
                 self._cells[x][y].draw(d, length, border, colour)
 
     def find_possible_with_direction(self, direction, xy, first):
+        '''Find possible directions to move, assumed cannot move backwards unless first move'''
         if first:
             tocheck = [0,1,2,3]
         else:
@@ -85,6 +91,7 @@ class Maze:
         return possible
 
     def get_next_cell(self, direction, xy):
+        '''Return (x,y) of the next cell in a direction'''
         x, y = xy
         if direction == 0:
             return (x, y-1)
@@ -96,6 +103,7 @@ class Maze:
             return (x-1, y)
 
     def get_coord_path(self, direction_path, xy):
+        '''Convert a path of directions to a path of coordinates'''
         path = [xy]
         for d in direction_path:
             next_cell = self.get_next_cell(d, xy)
@@ -104,6 +112,7 @@ class Maze:
         return path
 
     def solve(self, start, end):
+        '''BFS of maze returning path of coordinates'''
         queue = deque()
         queue.append((start, 1, []))
         first = True
@@ -122,6 +131,7 @@ class Maze:
                     queue.append((next_cell, d, path+[d]))
 
     def draw_path(self, path, d, l, b, c):
+        '''Draw a path onto the maze image'''
         for i in range(len(path)-1):
             half_l = l/2
             start_x = path[i][0] * l + b + half_l
@@ -136,10 +146,11 @@ class Cell:
     def __init__(self, x, y):
         self._x = x
         self._y = y
-        self._sides = 15
+        self._sides = 15 # Sum of sides, 1: top, 2: bottom, 4: left, 8: right
         self._visited = False
 
     def draw(self, d, l, b, colour):
+        # Draw the walls of a cell
         top_left = (self._x * l + b, self._y * l + b)
         top_right = (self._x * l + b + l, self._y * l + b)
         bot_left = (self._x * l + b, self._y * l + b + l)
