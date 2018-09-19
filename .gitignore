@@ -111,3 +111,5 @@ ENV/
 !week3/bear.png
 !week3/mask.png
 !week3/rabbit.jpg
+
+*.out
