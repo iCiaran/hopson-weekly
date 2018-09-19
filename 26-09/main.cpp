@@ -40,14 +40,24 @@ int select(std::vector<int>& list, int left, int right, int k){
     }
 }
 
-int main(){
-    std::ifstream file ("input.txt");
-    std::string line;
+int main(int argc, char *argv[]){
+    if(argc != 3) {
+        std::cout << "Usage: " << argv[0] << " filename k\n";
+        return 1;
+    }
     
+    std::ifstream file (argv[1]);
+    std::string line;
     std::getline(file, line);
     auto list = split(line);
-    std::getline(file, line);
-    int k = split(line)[0];
+    std::istringstream iss (argv[2]);
+    int k;
+    iss >> k;
+
+    if(k > list.size()){
+        std::cout << "k must be less than or equal to the number of elements in the input file\n";
+        return 1;
+    }
 
     std::cout << select(list, 0, list.size() - 1, k-1) << std::endl;
 }
